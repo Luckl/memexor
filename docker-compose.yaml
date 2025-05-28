@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.30.6
+    ports:
+      - "8080:8080"
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - ENABLE_MODULES=text2vec-openai,multi2vec-bind
+      - OPENAI_APIKEY=${OPENAI_API_KEY}
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+
+  ingest:
+    build: ./ingest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ingest:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WEAVIATE_URL=http://weaviate:8080
+
+  mcp:
+    build: ./mcp
+    ports:
+      - "8010:8010"
+    volumes:
+      - ./mcp:/app
+    environment:
+      - WEAVIATE_URL=http://weaviate:8080
+
+volumes:
+  weaviate_data:
