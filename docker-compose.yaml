@@ -9,17 +9,19 @@ services:
       - QUERY_DEFAULTS_LIMIT=25
       - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
       - PERSISTENCE_DATA_PATH=/var/lib/weaviate
-      - ENABLE_MODULES=text2vec-openai,multi2vec-bind
+      - ENABLE_MODULES=text2vec-openai
       - OPENAI_APIKEY=${OPENAI_API_KEY}
     volumes:
       - weaviate_data:/var/lib/weaviate
 
   ingest:
-    build: ./ingest
+    build:
+      context: .
+      dockerfile: ingest/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./ingest:/app
+      - .:/app
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - WEAVIATE_URL=http://weaviate:8080
