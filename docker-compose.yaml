@@ -2,10 +2,14 @@ version: '3.8'
 
 services:
   weaviate:
-    image: semitechnologies/weaviate:1.30.6
+    image: semitechnologies/weaviate:1.31.0
     ports:
       - "8080:8080"
     environment:
+      - CLUSTER_HOSTNAME=node1
+      - RAFT_BOOTSTRAP_EXPECT=1
+      - RAFT_JOIN=
+      - DISABLE_TELEMETRY=true
       - QUERY_DEFAULTS_LIMIT=25
       - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
       - PERSISTENCE_DATA_PATH=/var/lib/weaviate
@@ -15,6 +19,8 @@ services:
       - weaviate_data:/var/lib/weaviate
 
   ingest:
+    depends_on:
+      - weaviate
     build:
       context: .
       dockerfile: ingest/Dockerfile
@@ -25,8 +31,11 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - WEAVIATE_URL=http://weaviate:8080
+    restart: always
 
   mcp:
+    depends_on:
+    - weaviate
     build: ./mcp
     ports:
       - "8010:8010"
@@ -34,6 +43,7 @@ services:
       - ./mcp:/app
     environment:
       - WEAVIATE_URL=http://weaviate:8080
+    restart: always
 
 volumes:
   weaviate_data:
