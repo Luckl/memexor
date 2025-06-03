@@ -36,11 +36,13 @@ services:
   mcp:
     depends_on:
     - weaviate
-    build: ./mcp
+    build:
+      context: .
+      dockerfile: mcp/Dockerfile
     ports:
       - "8010:8010"
     volumes:
-      - ./mcp:/app
+      - .:/app
     environment:
       - WEAVIATE_URL=http://weaviate:8080
     restart: always
