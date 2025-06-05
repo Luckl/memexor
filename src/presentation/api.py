@@ -1,12 +1,13 @@
 import logging
+from typing import List
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from config.constants import MAX_REQUEST_SIZE
-from domain.models import SearchQuery, SearchResult
-from application.interfaces import VectorStoreInterface, EmbeddingInterface
-from infrastructure.vectorstores.weaviate_store import WeaviateVectorStore
-from infrastructure.embeddings.openai_embeddings import OpenAIEmbeddings
+from src.config.constants import MAX_REQUEST_SIZE
+from src.domain.models import Document, SearchQuery, SearchResult
+from src.application.interfaces import VectorStoreInterface, EmbeddingInterface
+from src.infrastructure.vectorstores.weaviate_store import WeaviateVectorStore
+from src.infrastructure.embeddings.openai_embeddings import OpenAIEmbeddings
 
 logger = logging.getLogger(__name__)
 

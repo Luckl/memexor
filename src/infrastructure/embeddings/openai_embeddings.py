@@ -2,9 +2,9 @@ import logging
 from typing import List
 import openai
 
-from config.settings import OPENAI_API_KEY
-from config.constants import OPENAI_MODEL, DEFAULT_BATCH_SIZE
-from application.interfaces import EmbeddingInterface
+from src.config.settings import OPENAI_API_KEY
+from src.config.constants import OPENAI_MODEL, DEFAULT_BATCH_SIZE
+from src.application.interfaces import EmbeddingInterface
 
 logger = logging.getLogger(__name__)
 

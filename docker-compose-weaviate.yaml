@@ -18,32 +18,18 @@ services:
     volumes:
       - weaviate_data:/var/lib/weaviate
 
-  ingest:
+  app:
     depends_on:
       - weaviate
     build:
       context: .
-      dockerfile: ingest/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - ./src:/app/src
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - WEAVIATE_URL=http://weaviate:8080
-    restart: always
-
-  mcp:
-    depends_on:
-    - weaviate
-    build:
-      context: .
-      dockerfile: mcp/Dockerfile
-    ports:
-      - "8010:8010"
-    volumes:
-      - .:/app
-    environment:
       - WEAVIATE_URL=http://weaviate:8080
     restart: always
 

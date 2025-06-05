@@ -1,9 +1,9 @@
 import logging
 from typing import List
 import weaviate
-from config.settings import WEAVIATE_URL, WEAVIATE_CLASS
-from domain.models import Document, SearchQuery, SearchResult
-from application.interfaces import VectorStoreInterface
+from src.config.settings import WEAVIATE_URL, WEAVIATE_CLASS
+from src.domain.models import Document, SearchQuery, SearchResult
+from src.application.interfaces import VectorStoreInterface
 
 logger = logging.getLogger(__name__)
 

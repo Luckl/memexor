@@ -7,7 +7,8 @@ from config.constants import (
     DEFAULT_WEAVIATE_URL,
     OPENAI_API_KEY_ENV,
     UPLOAD_DIR,
-    LOG_DIR
+    LOG_DIR,
+    WEAVIATE_CLASS
 )
 
 # Load environment variables from .env file
@@ -23,4 +24,7 @@ if not OPENAI_API_KEY:
 
 # Ensure directories exist
 for directory in [UPLOAD_DIR, LOG_DIR]:
-    Path(directory).mkdir(parents=True, exist_ok=True) 
+    Path(directory).mkdir(parents=True, exist_ok=True)
+
+# Re-export WEAVIATE_CLASS for convenience
+__all__ = ['WEAVIATE_URL', 'OPENAI_API_KEY', 'WEAVIATE_CLASS'] 
