@@ -22,7 +22,12 @@ class WeaviateVectorStore(VectorStoreInterface):
                 "vectorizer": "none",  # We provide vectors explicitly
                 "properties": [
                     {"name": "text", "dataType": ["text"]},
-                    {"name": "metadata", "dataType": ["object"]}
+                    {"name": "metadata", "dataType": ["object"],
+                     "nestedProperties": [
+                         {"name": "filename", "dataType": ["text"]},
+                         {"name": "timestamp", "dataType": ["date"]},
+                         {"name": "source", "dataType": ["text"]}
+                     ]}
                 ]
             }
             self._client.schema.create_class(class_obj)
@@ -34,7 +39,11 @@ class WeaviateVectorStore(VectorStoreInterface):
             for doc in docs:
                 properties = {
                     "text": doc.text,
-                    "metadata": doc.metadata or {}
+                    "metadata": doc.metadata or {
+                        "filename": "unknown",
+                        "timestamp": None,
+                        "source": "unknown"
+                    }
                 }
                 batch.add_data_object(
                     data_object=properties,
